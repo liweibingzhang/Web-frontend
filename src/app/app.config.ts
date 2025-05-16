@@ -10,7 +10,7 @@ export const appConfig: ApplicationConfig = {
 export const environment = {
   apiUrl: 'http://localhost:8080',
   deepseekApiUrl: 'https://api.deepseek.com/chat/completions',
-  deepseekApiKey: 'sk-f0081318dd6945b0b7098b552a044af4',
+  deepseekApiKey: '',
   groupPageSize: 9,
   componentPageSize: 16,
   myApplyPageSize: 5,
