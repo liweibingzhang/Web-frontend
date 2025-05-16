@@ -1,0 +1,52 @@
+<mat-card>
+
+
+  <mat-card-content>
+    <div class="avatar-wrapper">
+      <img src="avatar.jpg" class="avatar" />
+      <h2>{{ user!.username || '用户' }}</h2>
+      <p class="subtitle">{{ user!.email }}</p>
+    </div>
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+      <ng-container *ngIf="!isEditMode; else editMode">
+        <p><strong>用户名：</strong>{{ user!.username }}</p>
+        <p><strong>邮箱：</strong>{{ user!.email }}</p>
+        <p><strong>电话：</strong>{{ user!.phone || '暂无' }}</p>
+        <p><strong>角色：</strong>{{ user!.role || '普通用户' }}</p>
+      </ng-container>
+
+      <ng-template #editMode>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>用户名</mat-label>
+          <input matInput formControlName="username" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>邮箱</mat-label>
+          <input matInput formControlName="email" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>电话</mat-label>
+          <input matInput formControlName="phone" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>角色</mat-label>
+          <input matInput formControlName="role" />
+        </mat-form-field>
+      </ng-template>
+    </form>
+  </mat-card-content>
+
+  <mat-card-actions class="actions">
+    <ng-container *ngIf="!isEditMode; else editing">
+      <button mat-raised-button color="primary" (click)="enableEdit()">修改信息</button>
+    </ng-container>
+
+    <ng-template #editing>
+      <button mat-button (click)="cancelEdit()">取消</button>
+      <button mat-raised-button color="primary" (click)="onSubmit()">保存</button>
+    </ng-template>
+  </mat-card-actions>
+</mat-card>

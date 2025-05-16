@@ -1,0 +1,131 @@
+<div class="container">
+  <!-- 左侧：标题 + 可视化区域 -->
+  <div class="content-left">
+    <h3>{{ component!.name }}</h3>
+
+    <div class="visualization-area">
+      <div class="node-row">
+        <ng-container *ngFor="let node of linkedListNodes; let i = index">
+          <div class="node-item"
+               [class.comparing]="(isAnimating || isPaused) && currentStep >= 0 && animationSteps[currentStep].comparing.includes(i)"
+               [class.modified]="(isAnimating || isPaused) && currentStep >= 0 && animationSteps[currentStep].modified.includes(i)">
+            <svg viewBox="0 0 100 100">
+              <rect x="0" y="0" width="100" height="100" rx="16" ry="16" />
+              <text x="50" y="55" text-anchor="middle" font-size="32">{{ node.value }}</text>
+            </svg>
+          </div>
+          <span *ngIf="i < linkedListNodes.length - 1" class="arrow">→</span>
+        </ng-container>
+      </div>
+    </div>
+
+    <!-- 关键指标显示区域 -->
+    <div class="metrics-panel">
+      <mat-card>
+        <mat-card-content>
+          <div class="metrics-grid">
+            <div class="metric-item">
+              <div class="metric-label">操作步骤</div>
+              <div class="metric-value">{{ currentStep >= 0 ? currentStep + 1 : 0 }}</div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div *ngIf="searchResultMessage" class="search-message">
+      <mat-card color="accent">
+        <mat-card-content>
+          {{ searchResultMessage }}
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="animation-controls">
+      <!-- 速度控制部分 -->
+      <div class="speed-control">
+        <label>动画速度</label>
+        <mat-slider class="speed-slider"
+                    [min]="100"
+                    [max]="1000"
+                    [step]="100"
+                    [discrete]="true">
+          <input matSliderThumb [(ngModel)]="animationSpeed">
+        </mat-slider>
+        <span>{{animationSpeed}}ms</span>
+      </div>
+
+      <!-- 控制按钮 -->
+      <div class="button-row">
+        <button mat-raised-button (click)="startAnimation()" [disabled]="isAnimating">
+          开始
+        </button>
+        <button mat-raised-button (click)="pauseAnimation()" [disabled]="!isAnimating || isPaused">
+          暂停
+        </button>
+        <button mat-raised-button (click)="resumeAnimation()" [disabled]="!isPaused">
+          继续
+        </button>
+        <button mat-raised-button (click)="resetAnimation()" [disabled]="!isAnimating && currentStep === -1">
+          重置
+        </button>
+      </div>
+
+      <!-- 单步执行 -->
+      <div class="step-control">
+        <h4>单步执行</h4>
+        <div class="step-buttons">
+          <button mat-icon-button (click)="stepBackward()"
+                  [disabled]="!canStepBackward || isAnimating"
+                  matTooltip="上一步"
+                  matTooltipPosition="above">
+            <mat-icon>skip_previous</mat-icon>
+          </button>
+          <button mat-icon-button (click)="stepForward()"
+                  [disabled]="!canStepForward || isAnimating"
+                  matTooltip="下一步"
+                  matTooltipPosition="above">
+            <mat-icon>skip_next</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 右侧：控制面板 -->
+  <div class="panel">
+    <!-- 实例选择 -->
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>选择实例</mat-label>
+      <mat-select [(value)]="selectedInstance" (selectionChange)="onInstanceChange($event)">
+        <mat-option *ngFor="let instance of instances" [value]="instance">
+          {{ instance.name }}
+          <button mat-icon-button color="warn" class="delete-button"
+                  (click)="deleteInstance(instance); $event.stopPropagation()" matTooltip="删除实例">
+            <mat-icon *ngIf="instance !== selectedInstance">delete</mat-icon>
+          </button>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- 操作按钮 -->
+    <div class="button-row">
+      <button mat-raised-button color="primary" (click)="saveInstance()">保存实例</button>
+      <button mat-raised-button color="accent" (click)="exportInstance()">导出实例</button>
+    </div>
+
+    <input type="number" [(ngModel)]="inputValue" placeholder="输入值">
+    <button mat-raised-button color="primary" (click)="insertValue()">头插法插入</button>
+    <button mat-raised-button color="accent" (click)="deleteValue()">删除值</button>
+    <button mat-raised-button color="warn" (click)="searchValue()">查找值</button>
+
+    <button mat-stroked-button color="warn" class="ai-button" (click)="aiHelper()">AI 助手</button>
+
+    <!-- 配置面板 -->
+    <div class="config-panel">
+      <h3>配置详情(可修改并保存)</h3>
+      <mat-card>
+          <textarea matInput rows="10" [(ngModel)]="selectedJsonconfig" (ngModelChange)="onConfigChange()"
+                    placeholder="编辑配置..." class="json-editor"></textarea>
+      </mat-card>
+    </div>
+  </div>
+</div>

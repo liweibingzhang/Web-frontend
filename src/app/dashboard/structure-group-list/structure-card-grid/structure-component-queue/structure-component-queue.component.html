@@ -1,0 +1,85 @@
+<div class="container">
+  <div class="content-left">
+    <h3>{{ component!.name }}</h3>
+
+    <div class="visualization-area">
+      <div class="queue-container"> <div class="queue-label queue-front">队头</div> <div class="queue-item" *ngFor="let item of items; let i = index"> <svg viewBox="0 0 140 100"> <rect x="10" y="10" width="80" height="80" rx="5"
+                                                                                                                                                                                         [class.comparing]="(isAnimating || isPaused) && currentStep >= 0 &&
+                                    ((animationSteps[currentStep].operation === 'dequeuing' && animationSteps[currentStep].index === i) ||
+                                     (animationSteps[currentStep].operation === 'enqueued' && animationSteps[currentStep].index === i))" /> <text class="number-text" x="50" y="55" text-anchor="middle" dominant-baseline="middle">{{item}}</text>
+      </svg>
+      </div>
+        <div class="queue-item" *ngIf="(isAnimating || isPaused) && currentStep >= 0 && animationSteps[currentStep].operation === 'enqueue'"> <svg viewBox="0 0 140 100"> <rect x="10" y="10" width="80" height="80" rx="5" class="comparing" /> <text class="number-text" x="50" y="55" text-anchor="middle" dominant-baseline="middle">{{ animationSteps[currentStep].value }}</text>
+        </svg>
+        </div>
+        <div class="queue-label queue-back">队尾</div> </div>
+    </div>
+
+    <div class="layout-container">
+    </div>
+    <div class="visualization-control">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Enter value to enqueue</mat-label> <input matInput type="number" [(ngModel)]="inputValue">
+      </mat-form-field>
+
+      <div class="button-row">
+        <button mat-raised-button color="primary" (click)="enqueue()" [disabled]="isAnimating || isPaused || inputValue === null"> <span>入队</span>
+        </button>
+        <button mat-raised-button color="accent" (click)="dequeue()" [disabled]="isAnimating || isPaused || items.length === 0"> <span>出队</span>
+        </button>
+        <button mat-raised-button (click)="startAnimation()" [disabled]="isAnimating">
+          <span>开始</span>
+        </button>
+        <button mat-raised-button (click)="pauseAnimation()" [disabled]="!isAnimating || isPaused">
+          <span>暂停</span>
+        </button>
+        <button mat-raised-button (click)="resumeAnimation()" [disabled]="!isPaused">
+          <span>继续</span>
+        </button>
+        <button mat-raised-button (click)="resetAnimation()" [disabled]="!isAnimating && currentStep === -1">
+          <span>重设</span>
+        </button>
+      </div>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>配置详情 (可修改并保存)</mat-label> <textarea matInput
+                                                                 [(ngModel)]="selectedJsonconfig" (ngModelChange)="onConfigChange()" rows="4"></textarea> </mat-form-field>
+      <div class="button-row">
+        <button mat-raised-button color="primary" (click)="saveInstance()">保存实例</button>
+        <button mat-raised-button color="accent" (click)="exportInstance()">导出实例</button>
+      </div>
+
+      <button mat-raised-button color="primary" (click)="generateRandomArray()">生成随机数</button>
+      <div class="speed-control">
+        <label>Animation Speed</label>
+        <mat-slider class="speed-slider"
+                    [min]="100"
+                    [max]="1000"
+                    [step]="100"
+                    [discrete]="true">
+          <input matSliderThumb [(ngModel)]="animationSpeed">
+        </mat-slider>
+        <span>{{animationSpeed}}ms</span>
+      </div>
+
+      <div class="step-control">
+        <h4>Step Control</h4>
+        <div class="step-buttons">
+          <button mat-icon-button (click)="stepBackward()"
+                  [disabled]="!canStepBackward || isAnimating"
+                  matTooltip="Previous Step"
+                  matTooltipPosition="above">
+            <mat-icon>skip_previous</mat-icon>
+          </button>
+          <button mat-icon-button (click)="stepForward()"
+                  [disabled]="!canStepForward || isAnimating"
+                  matTooltip="Next Step"
+                  matTooltipPosition="above">
+            <mat-icon>skip_next</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+    <button mat-stroked-button color="warn" class="ai-button" (click)="aiHelper()">AI 助手</button>
+  </div>
+</div>

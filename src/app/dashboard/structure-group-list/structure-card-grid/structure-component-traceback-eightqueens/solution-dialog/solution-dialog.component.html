@@ -1,0 +1,21 @@
+<h2 mat-dialog-title>N皇后解决方案 #{{ data.solutionNumber }}</h2>
+<mat-dialog-content>
+  <div class="chessboard-container">
+    <div class="chessboard">
+      <div *ngFor="let row of data.board; let i = index" class="row">
+        <div *ngFor="let cell of row; let j = index" 
+             class="cell"
+             [class.queen]="cell === 1"
+             [style.background]="(i + j) % 2 === 0 ? '#f8f8f8' : '#ffffff'">
+          <mat-icon *ngIf="cell === 1">check_circle</mat-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-stroked-button mat-dialog-close>
+    <mat-icon>close</mat-icon>
+    关闭
+  </button>
+</mat-dialog-actions>

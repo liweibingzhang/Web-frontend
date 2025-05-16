@@ -1,0 +1,27 @@
+.panel {
+    width: 240px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.button-row {
+display: flex;
+justify-content: center;
+gap: 6px;
+margin-top: 24px;
+margin-bottom: 24px;
+}
+
+.button-row button {
+writing-mode: horizontal-tb;
+text-orientation: mixed;
+}
+
+.button-row button span {
+display: inline-block;
+}

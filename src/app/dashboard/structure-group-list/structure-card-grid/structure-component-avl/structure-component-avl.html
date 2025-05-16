@@ -1,0 +1,61 @@
+<div style="display: flex; height: 100vh;">
+  <div style="flex: 1; padding: 10px; overflow: auto;">
+    <div id="bst-container" style="width: 100%; height: 100%;"></div>
+  </div>
+
+  <div class="panel" style="width: 400px; padding: 20px; border-left: 1px solid #ccc; background-color: #f9f9f9;">
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Select Instance</mat-label>
+      <mat-select [(value)]="selectedInstance" (selectionChange)="onInstanceChange($event)">
+        <mat-option *ngFor="let instance of instances" [value]="instance">
+          {{ instance.name }}
+          <button
+            mat-icon-button
+            color="warn"
+            class="delete-button"
+            (click)="deleteInstance(instance); $event.stopPropagation()"
+            matTooltip="Delete Instance"
+          >
+            <mat-icon *ngIf="instance !== selectedInstance">delete</mat-icon>
+          </button>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div style="margin-bottom: 20px;">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Enter Number</mat-label>
+        <input matInput [(ngModel)]="value" placeholder="Enter number" />
+      </mat-form-field>
+      <div class="button-row">
+        <button mat-raised-button color="primary" (click)="insert()">插入</button>
+        <button mat-raised-button color="accent" (click)="search()">查找</button>
+      </div>
+    </div>
+
+    <div class="button-row" style="margin-top: 10px;">
+      <button mat-raised-button color="primary" (click)="saveInstance()">保存实例</button>
+      <button mat-raised-button color="accent" (click)="exportInstance()">导出实例</button>
+    </div>
+
+    <button mat-stroked-button color="warn" class="ai-button" style="margin-top: 10px;" (click)="aiHelper()">
+      AI助手
+    </button>
+
+    <div class="config-panel" style="margin-top: 20px;">
+      <h3>Configuration Details (Modifiable and Savable)</h3>
+      <mat-card>
+        <textarea
+          matInput
+          rows="10"
+          [(ngModel)]="selectedJsonconfig"
+          (ngModelChange)="onConfigChange()"
+          placeholder="Edit configuration..."
+          class="json-editor"
+          style="width: 100%;"
+        ></textarea>
+      </mat-card>
+    </div>
+  </div>
+</div>

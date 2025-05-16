@@ -1,0 +1,191 @@
+.container {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+  padding: 24px;
+}
+
+.content-left {
+  flex: 1;
+}
+
+.stack-container {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-end;
+  /* gap: 8px;   Remove the gap */
+  flex-wrap: wrap;
+  position: relative;
+  min-height: 140px;
+  justify-content: flex-end; /* Change to flex-end */
+}
+
+.stack-item {
+  width: 80px;
+  height: 80px;
+}
+
+.stack-item svg rect {
+  fill: #67a5e0;
+  transition: fill 0.3s ease;
+}
+
+.stack-item svg rect.comparing {
+  fill: #e8d254 !important;
+  transition: fill 0.3s ease;
+}
+
+.stack-item svg rect.swapped {
+  fill: #68ad6a !important;
+  transition: fill 0.3s ease;
+}
+
+.panel {
+  width: 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.layout-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  margin: 32px 0;
+  padding: 0 16px;
+}
+
+.visualization-control {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.metrics-panel mat-card {
+  padding: 10px;
+}
+
+.metrics-panel mat-card-header {
+  padding: 5px;
+  justify-content: center;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  padding: 8px;
+}
+
+.metric-item {
+  text-align: center;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.metric-label {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.metric-value {
+  font-size: 24px;
+  font-weight: bold;
+  color: #2196f3;
+}
+
+.animation-controls {
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.speed-control {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 16px;
+}
+
+.speed-slider {
+  flex: 1;
+}
+
+.button-row {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+.button-row button {
+  writing-mode: horizontal-tb;
+  text-orientation: mixed;
+}
+
+.button-row button span {
+  display: inline-block;
+}
+
+.step-control {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 8px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.step-buttons {
+  display: flex;
+  gap: 24px;
+}
+
+.step-buttons button {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.step-buttons button:disabled {
+  background-color: #f5f5f5;
+  box-shadow: none;
+}
+
+.step-buttons mat-icon {
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+}
+
+.ai-button {
+  width: 100%;
+}
+
+.number-text {
+  fill: white;
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.stack-label {
+  position: absolute;
+  font-weight: bold;
+  font-size: 20px;   /* Increased font size */
+  color: #555;
+}
+
+.stack-bottom {
+  top: -20px;
+  right: 0;
+}
+
+.stack-top {
+  top: -20px;
+  left: 0;
+}

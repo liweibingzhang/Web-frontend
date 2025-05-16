@@ -1,0 +1,23 @@
+<h2 mat-dialog-title>申请加入分组</h2>
+
+<mat-dialog-content class="mat-typography">
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>分组 ID</mat-label>
+    <input matInput [(ngModel)]="groupId" placeholder="请输入 Group ID">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>申请理由</mat-label>
+    <textarea
+      matInput
+      [(ngModel)]="applyReason"
+      placeholder="请说明你想加入该分组的原因"
+      rows="3"
+    ></textarea>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">取消</button>
+  <button mat-raised-button color="primary" (click)="onApply()" [disabled]="!groupId.trim()">提交申请</button>
+</mat-dialog-actions>

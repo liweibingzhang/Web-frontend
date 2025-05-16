@@ -1,0 +1,72 @@
+<div class="container">
+  <h3>{{ component!.name }}</h3>
+  
+  <div class="three-column-layout">
+    <!-- 左侧列：可视化区域 -->
+    <div class="left-column">
+      <mat-form-field appearance="outline">
+        <mat-label>查找数字</mat-label>
+        <input matInput type="number" [(ngModel)]="searchValue" />
+      </mat-form-field>
+      <div id="bfs-container" style="width: 100%; height: 600px; border: 1px solid #ccc; overflow: hidden;"></div>
+    </div>
+
+    <!-- 中间列：动画控制和算法描述 -->
+    <div class="middle-column">
+      <div class="metrics-panel">
+        <mat-card>
+          <mat-card-content>
+            <div class="metrics-grid">
+              <div class="metric-item">
+                <div class="metric-label">查找次数</div>
+                <div class="metric-value">{{ animationController.currentStep >= 0 ? animationSteps[animationController.currentStep].visitedNodes.length : 0 }}</div>
+              </div>
+              <div class="metric-item">
+                <div class="metric-label">是否找到</div>
+                <div class="metric-value">{{ animationController.currentStep >= 0 ? (animationSteps[animationController.currentStep].found ? '是' : '否') : '否' }}</div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <app-animation-controller
+        #animationController
+        [animationSteps]="animationSteps"
+        [generateSteps]="generateBFSSteps"
+        [resetAnimationSteps]="resetAnimationSteps"
+        [updateAnimationSteps]="updateAnimationSteps">
+      </app-animation-controller>
+
+      <div class="algorithm-description">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>二分查找算法</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-tab-group>
+              <mat-tab label="算法说明">
+                <div class="tab-content">
+                  <pre>{{ getBFSDescription().algorithm }}</pre>
+                </div>
+              </mat-tab>
+              <mat-tab label="可视化说明">
+                <div class="tab-content">
+                  <pre>{{ getBFSDescription().visualization }}</pre>
+                </div>
+              </mat-tab>
+            </mat-tab-group>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+
+    <!-- 右侧列：实例管理器 -->
+    <div class="right-column">
+      <app-instance-manager
+        (configUpdated)="onConfigUpdated($event)"
+        (generateRandomConfig)="onGenerateRandom()">
+      </app-instance-manager>
+    </div>
+  </div>
+</div>

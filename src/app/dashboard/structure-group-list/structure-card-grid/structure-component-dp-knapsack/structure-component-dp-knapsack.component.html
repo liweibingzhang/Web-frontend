@@ -1,0 +1,237 @@
+<!-- structure-component-dp-knapsack.component.html -->
+<div class="container">
+    <!-- 新增：问题说明区域 -->
+  <mat-accordion class="problem-description">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>📦 背包问题描述</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="description-content">
+        <h3>0-1背包问题</h3>
+        <p>给定一组物品，每个物品有重量(weight)和价值(value)，在不超过背包容量限制的前提下，选择物品使得总价值最大。</p>
+        <p>形式化描述：</p>
+        <ul>
+          <li>输入：n个物品，重量数组weights，价值数组values，背包容量capacity</li>
+          <li>输出：最大总价值 和 选择的物品索引</li>
+        </ul>
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>💡 动态规划核心思路</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="description-content">
+        <h3>DP状态定义</h3>
+        <p>dp[i][w] 表示前i个物品，背包容量为w时的最大价值</p>
+        
+        <h3>状态转移方程</h3>
+        <pre>
+            dp[i][w] = max(
+            dp[i-1][w],  // 不选第i个物品
+            dp[i-1][w-weights[i]] + values[i]  // 选第i个物品
+        )</pre>
+        
+        <h3>边界条件</h3>
+        <p>dp[0][...] = 0 (没有物品时价值为0)</p>
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>🔧 解决方法步骤</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="description-content">
+        <ol>
+          <li>初始化(n+1)×(capacity+1)的二维数组</li>
+          <li>按物品顺序填充DP表</li>
+          <li>根据转移方程计算每个单元格值</li>
+          <li>回溯找出选择的物品</li>
+        </ol>
+        <p>算法复杂度：O(n×capacity)</p>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <!-- 顶部：物品列表 -->
+  <div class="item-banner">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+    <h3>0-1背包问题动态规划</h3>
+    <button mat-mini-fab color="primary" (click)="openAddItemDialog()" matTooltip="添加新物品">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+    <div class="item-list" cdkDropList (cdkDropListDropped)="onItemDropped($event)">
+      <div *ngFor="let item of items; let i = index" 
+           class="item-card"
+           cdkDrag
+           [ngClass]="{'selected-item': selectedItems.includes(i)}">
+        <!-- <div class="item-header">物品 {{i+1}}</div> -->
+        <div class="item-header">
+            物品 {{i+1}}
+            <button mat-icon-button class="delete-item-btn" (click)="deleteItem(i); $event.stopPropagation()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+        <div class="item-properties">
+          <div class="property">
+            <span class="label">重量</span>
+            <span class="value">{{item.weight}}</span>
+          </div>
+          <div class="property">
+            <span class="label">价值</span>
+            <span class="value">{{item.value}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 主体内容 -->
+  <div class="main-content">
+    <!-- 左侧：控制区 -->
+    <div class="left-panel">
+      <mat-card class="control-card">
+
+         <!-- 新增容量输入 -->
+        <div class="capacity-control">
+        <mat-form-field appearance="fill">
+            <mat-label>背包容量</mat-label>
+            <input matInput type="number" 
+                [(ngModel)]="selectedCapacity" 
+                (change)="onCapacityChange()"
+                min="1" 
+                required>
+        </mat-form-field>
+        </div>
+
+        <app-animation-controller
+          [animationSteps]="dpSteps"
+          [generateSteps]="generateDPSteps"
+          [resetAnimationSteps]="resetDPState"
+          [updateAnimationSteps]="updateDPState">
+        </app-animation-controller>
+
+
+
+
+        <div class="result-panel" *ngIf="isComplete">
+            <h3>最优解</h3>
+            <div class="metric">
+                <span class="label">总价值</span>
+                <span class="value">{{ totalValue }}</span>
+            </div>
+            <div class="metric">
+                <span class="label">选中物品</span>
+                <div class="result-items">
+                <div *ngFor="let idx of finalSelectedItems" class="result-item">
+                    物品 {{ idx + 1 }} (价值: {{ items[idx].value }}, 重量: {{ items[idx].weight }})
+                </div>
+                </div>
+            </div>
+        </div>
+      </mat-card>
+    </div>
+
+    <!-- 中间：矩阵区 -->
+    <div class="matrix-panel">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>动态规划矩阵</mat-card-title>
+          <mat-card-subtitle>容量维度: 0-{{selectedCapacity}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="matrix-container">
+            <table class="dp-table">
+                <thead>
+                  <tr>
+                    <th class="axis-header"></th>
+                    <th *ngFor="let w of capacityRange" class="capacity-header">{{w}}</th>
+                  </tr>
+                </thead>
+                
+                <tbody>
+                     <!-- 修改：只显示 i >= 1 的行 -->
+                    <tr *ngFor="let row of dpTable; let i = index; let last = last">
+                    <!-- 跳过初始行 -->
+                    <ng-container *ngIf="i > 0">
+                        <th class="axis-header">物品{{i}}</th>
+                        <td 
+                        *ngFor="let cell of row; let j = index" 
+                        [ngClass]="{
+                            'current-cell': isCurrentCell(i,j),
+                            'previous-cell': isPreviousCell(i,j),
+                            'optimal-path': isOptimalPath(i,j),
+                            'optimal-cell': isOptimalCell(i, j)
+                        }">
+                        {{cell}}
+                        </td>
+                    </ng-container>
+                    </tr>
+                  <!-- <tr *ngFor="let row of dpTable; let i = index">
+                    <th class="axis-header">{{i > 0 ? '物品'+i : '初始'}}</th>
+                    <td *ngFor="let cell of row; let j = index" 
+                        [ngClass]="{
+                        'current-cell': isCurrentCell(i,j),
+                        'previous-cell': isPreviousCell(i,j),
+                        'optimal-path': isOptimalPath(i,j)
+                        }">
+                    {{cell}}
+                    </td>
+                  </tr> -->
+                </tbody>
+                
+              </table>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- 右侧：配置区（保持原有实例管理代码） -->
+    <div class="panel">
+        <mat-form-field appearance="fill" class="full-width">
+        <mat-label>选择实例</mat-label>
+        <mat-select [(value)]="selectedInstance" (selectionChange)="onInstanceChange($event)">
+            <mat-option *ngFor="let instance of instances" [value]="instance">{{ instance.name }}
+            <button
+            mat-icon-button
+            color="warn"
+            class="delete-button"
+            (click)="deleteInstance(instance); $event.stopPropagation()"
+            matTooltip="删除分组"
+            ><mat-icon *ngIf="instance !== selectedInstance">delete</mat-icon></button>
+            </mat-option>
+
+        </mat-select>
+        </mat-form-field>
+
+        <div class="button-row">
+        <button mat-raised-button color="primary" (click)="saveInstance()">保存实例</button>
+        <button mat-raised-button color="accent" (click)="exportInstance()">导出实例</button>
+        </div>
+
+        <button mat-stroked-button color="warn" class="ai-button" (click)="aiHelper()">AI 助手</button>
+
+        <!-- 右侧配置展示和编辑 -->
+        <div class="config-panel" fxFlex="50">
+        <h3>配置详情(可修改并保存)</h3>
+        <mat-card>
+            <!-- JSON 编辑区 -->
+            <textarea
+            matInput
+            rows="10"
+            [(ngModel)]="selectedJsonconfig"
+            (ngModelChange)="onConfigChange()"
+            placeholder="编辑配置..."
+            class="json-editor"
+            ></textarea>
+        </mat-card>
+        </div>
+    
+
+    </div>
+  </div>
+</div>
+
+
+

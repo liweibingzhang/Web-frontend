@@ -1,0 +1,84 @@
+<mat-card class="floating-window" (mousedown)="startDrag($event)">
+  <div class="card-header">
+    <button mat-icon-button (click)="closeWindow()" class="close-button" aria-label="关闭">
+      <mat-icon>close</mat-icon>
+    </button>
+    <span class="title drag-handle">视频在线课堂</span>
+  </div>
+
+  <mat-card-content>
+    <div *ngIf="!joined">
+      <mat-form-field appearance="outline" class="room-input">
+        <mat-label>房间号</mat-label>
+        <input matInput [(ngModel)]="roomId" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="room-input">
+        <mat-label>密码</mat-label>
+        <input matInput [(ngModel)]="password" />
+      </mat-form-field>
+      <div class="button-group">
+        <button mat-raised-button color="primary" (click)="joinRoom()">加入房间</button>
+        <button mat-raised-button color="accent" (click)="createRoom()">创建房间</button>
+      </div>
+    </div>
+
+    <div *ngIf="joined" class="conference-layout">
+      <!-- 主视频区域 -->
+      <div class="main-video">
+        <video
+          #mainVideo
+          [srcObject]="selectedUserId ? remoteStreams.get(selectedUserId) : localStream"
+          autoplay
+          muted="!selectedUserId">
+        </video>
+        <div
+          class="chat-box"
+          [class.expanded]="chatExpanded"
+          tabindex="0"
+          (focusin)="expandChat()"
+          (focusout)="collapseChat()"
+        >
+          <div class="chat-messages" *ngIf="chatExpanded">
+            <div *ngFor="let message of messages" class="chat-message">
+              <span class="user">{{ message.user }}:</span>
+              <span class="text">{{ message.text }}</span>
+            </div>
+          </div>
+          <div class="chat-input">
+            <input [(ngModel)]="chatInput" (keydown.enter)="sendMessage()" placeholder="输入消息..." />
+            <button mat-icon-button (click)="sendMessage()">
+              <mat-icon>send</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 侧边小窗列表 -->
+      <div class="sidebar" [class.collapsed]="isSidebarCollapsed">
+        <div class="sidebar-toggle">
+          <button mat-icon-button (click)="toggleSidebar()">
+            <mat-icon>{{ isSidebarCollapsed ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+          </button>
+        </div>
+        <!-- 本地摄像头 -->
+        <div class="video-thumb" (click)="selectUser(null)">
+          <video #localThumb #local [srcObject]="localStream" autoplay muted></video>
+          <div class="label">我</div>
+        </div>
+
+        <!-- 所有远程用户 -->
+        <div class="video-thumb" *ngFor="let userId of remoteUserIds" (click)="selectUser(userId)">
+          <video [srcObject]="remoteStreams.get(userId)" autoplay></video>
+          <div class="label">{{ userId }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="button-group" *ngIf="joined">
+      <button mat-raised-button (click)="shareCamera()">共享摄像头</button>
+      <button mat-raised-button (click)="shareScreen()">共享屏幕</button>
+      <button mat-raised-button color="warn" (click)="closeSharedStream()">关闭共享</button>
+    </div>
+  </mat-card-content>
+
+</mat-card>

@@ -1,0 +1,191 @@
+.container {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+  padding: 24px;
+}
+
+.content-left {
+  flex: 1;
+}
+
+.queue-container {
+display: flex;
+  flex-direction: row; /* Changed to row for queue */
+  align-items: flex-end; /* Align items to the center vertically */
+  /*gap: 8px;   /* Added gap between items */
+  flex-wrap: wrap;
+  position: relative;
+  min-height: 140px; /* Adjusted height */
+  justify-content: flex-end; /* Start items from the beginning */
+}
+
+.queue-item { /* Changed class name */
+  width: 80px; /* Adjusted width */
+  height: 80px;
+}
+
+.queue-item svg rect { /* Changed class name */
+  fill: #67a5e0;
+  transition: fill 0.3s ease;
+}
+
+.queue-item svg rect.comparing { /* Changed class name */
+  fill: #e8d254 !important;
+  transition: fill 0.3s ease;
+}
+
+.queue-item svg rect.swapped { /* Changed class name */
+  fill: #68ad6a !important;
+  transition: fill 0.3s ease;
+}
+
+.panel {
+  width: 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.layout-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  margin: 32px 0;
+  padding: 0 16px;
+}
+
+.visualization-control {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.metrics-panel mat-card {
+  padding: 10px;
+}
+
+.metrics-panel mat-card-header {
+  padding: 5px;
+  justify-content: center;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  padding: 8px;
+}
+
+.metric-item {
+  text-align: center;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.metric-label {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.metric-value {
+  font-size: 24px;
+  font-weight: bold;
+  color: #2196f3;
+}
+
+.animation-controls {
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.speed-control {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 16px;
+}
+
+.speed-slider {
+  flex: 1;
+}
+
+.button-row {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+.button-row button {
+  writing-mode: horizontal-tb;
+  text-orientation: mixed;
+}
+
+.button-row button span {
+  display: inline-block;
+}
+
+.step-control {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 8px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.step-buttons {
+  display: flex;
+  gap: 24px;
+}
+
+.step-buttons button {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.step-buttons button:disabled {
+  background-color: #f5f5f5;
+  box-shadow: none;
+}
+
+.step-buttons mat-icon {
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+}
+
+.ai-button {
+  width: 100%;
+}
+
+.number-text {
+  fill: white;
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.queue-label { /* Changed class name */
+  position: absolute;
+  font-weight: bold;
+  font-size: 20px;
+  color: #555;
+}
+
+.queue-front { /* Changed class name */
+  top: -20px; /* Adjusted position */
+  left: 0;
+}
+
+.queue-back { /* Changed class name */
+  top: -20px; /* Adjusted position */
+  right: 0;
+}

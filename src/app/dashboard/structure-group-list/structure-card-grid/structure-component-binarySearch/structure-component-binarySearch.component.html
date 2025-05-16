@@ -1,0 +1,122 @@
+<div class="container">
+    <div class="content-left">
+      <h3>{{ component!.name }}</h3>
+      
+      <div class="visualization-area">
+        <div class="square-row">
+          <div class="square-item" *ngFor="let item of items; let i = index">
+            <svg viewBox="0 0 100 140">
+              <!-- 数值方块 -->
+              <rect x="10" y="10" width="80" height="80" rx="5"
+                [ngClass]="{
+                  'comparing': comparing.includes(i),
+                  'found': foundIndex === i,
+                  'in-path': animationController.currentStep >= 0 && animationSteps[animationController.currentStep].searchPath.includes(i)
+                }"/>
+              
+              <!-- 数值文本 -->
+              <text class="number-text" x="50" y="55" 
+                    text-anchor="middle" 
+                    dominant-baseline="middle">{{item}}</text>
+              
+              <!-- 指示器 -->
+              <text *ngIf="left === i" 
+                  x="35" y="120" 
+                  text-anchor="middle" 
+                  class="indicator"
+                  fill="#f38e21">L</text>
+              <text *ngIf="right === i" 
+                  x="65" y="120" 
+                  text-anchor="middle" 
+                  class="indicator"
+                  fill="#4CAF50">R</text>
+              <text *ngIf="mid === i" 
+                  x="50" y="120" 
+                  text-anchor="middle" 
+                  class="indicator"
+                  fill="#ea5a8a">M</text>
+              
+              <text *ngIf="animationController.currentStep >= 0 && animationSteps[animationController.currentStep].searchPath.includes(i)"
+                  x="50" y="135"
+                  text-anchor="middle"
+                  class="path-order">
+                  {{animationSteps[animationController.currentStep].searchPath.indexOf(i) + 1}}
+              </text>
+            </svg>
+          </div>
+        </div>
+      </div>
+  
+      <div class="layout-container">
+        <div class="visualization-control">
+          <!-- 左列：关键指标显示区域 -->
+          <div class="metrics-panel">
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title>关键指标</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <div class="metrics-grid">
+                  <div class="metric-item">
+                    <div class="metric-label">查找次数</div>
+                    <div class="metric-value">{{ searchCount }}</div>
+                  </div>
+                  <div class="metric-item">
+                    <div class="metric-label">是否查找成功</div>
+                    <div class="metric-value">{{ found ? '是' : '否' }}</div>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+
+          <app-animation-controller
+            #animationController
+            [animationSteps]="animationSteps"
+            [generateSteps]="generateBinarySearchSteps"
+            [resetAnimationSteps]="resetAnimationSteps"
+            [updateAnimationSteps]="updateAnimationSteps">
+          </app-animation-controller>
+          
+        </div>
+
+        <!-- 右列：查找数字和算法描述 -->
+        <div class="right-column">
+          <mat-form-field appearance="outline">
+            <mat-label>查找数字</mat-label>
+            <input matInput type="number" [(ngModel)]="searchValue" />
+          </mat-form-field>
+
+          <div class="algorithm-description">
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title>二分查找算法</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <mat-tab-group>
+                  <mat-tab label="算法说明">
+                    <div class="tab-content">
+                      <pre>{{ getBinarySearchDescription().algorithm }}</pre>
+                    </div>
+                  </mat-tab>
+                  <mat-tab label="可视化说明">
+                    <div class="tab-content">
+                      <pre>{{ getBinarySearchDescription().visualization }}</pre>
+                    </div>
+                  </mat-tab>
+                </mat-tab-group>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右侧：控制面板 -->
+    <div class="panel">
+      <app-instance-manager
+        (configUpdated)="onConfigUpdated($event)"
+        (generateRandomConfig)="onGenerateRandom()">
+      </app-instance-manager>
+    </div>
+  </div>

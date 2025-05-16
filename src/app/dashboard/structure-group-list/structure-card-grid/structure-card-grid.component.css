@@ -1,0 +1,39 @@
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.component-card {
+  position: relative;
+  height: 100%;
+  padding: 0;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.card-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.component-card img {
+  height: 70%;
+  object-fit: cover;
+}
+
+.component-card mat-card-content {
+  text-align: center;
+  font-weight: 500;
+  padding: 8px 0;
+}
+
+.delete-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  z-index: 1;
+}

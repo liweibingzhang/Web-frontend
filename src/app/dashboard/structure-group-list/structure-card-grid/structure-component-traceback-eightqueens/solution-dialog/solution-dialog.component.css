@@ -1,0 +1,81 @@
+/* 对话框容器 */
+.chessboard-container {
+  padding: 16px;
+  max-width: 90vw;
+  margin: 0 auto;
+}
+
+/* 棋盘样式 */
+.chessboard {
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 行样式 */
+.row {
+  display: flex;
+}
+
+/* 单元格基础样式 */
+.cell {
+  position: relative;
+  flex: 1;
+  aspect-ratio: 1;
+  min-width: 40px;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #f0f0f0;
+  transition: all 0.2s ease;
+}
+
+/* 皇后样式 */
+.cell.queen {
+  background: #4CAF50 !important;
+}
+
+.cell.queen mat-icon {
+  color: white;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+}
+
+/* 对话框操作按钮 */
+mat-dialog-actions {
+  padding: 16px 24px;
+  border-top: 1px solid #eee;
+  margin-top: 20px;
+}
+
+mat-dialog-actions button {
+  gap: 8px;
+}
+
+/* 响应式设计 */
+@media (max-width: 600px) {
+  .cell {
+    min-width: 30px;
+    min-height: 30px;
+  }
+  
+  .cell.queen mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+mat-dialog-content {
+  animation: fadeIn 0.3s ease-out;
+}

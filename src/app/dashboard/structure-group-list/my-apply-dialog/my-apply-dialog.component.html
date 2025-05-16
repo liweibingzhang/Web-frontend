@@ -1,0 +1,43 @@
+<h2 mat-dialog-title>我的申请记录</h2>
+
+<mat-dialog-content class="mat-typography">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z1 full-width">
+
+    <!-- Group ID 列 -->
+    <ng-container matColumnDef="group_id">
+      <th mat-header-cell *matHeaderCellDef> Group ID </th>
+      <td mat-cell *matCellDef="let element"> {{element.group_id}} </td>
+    </ng-container>
+
+    <!-- Reason 列 -->
+    <ng-container matColumnDef="apply_reason">
+      <th mat-header-cell *matHeaderCellDef> 申请理由 </th>
+      <td mat-cell *matCellDef="let element"> {{element.apply_reason}} </td>
+    </ng-container>
+
+    <!-- Status 列 -->
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef> 状态 </th>
+      <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+    </ng-container>
+
+    <!-- Created At 列 -->
+    <ng-container matColumnDef="created_at">
+      <th mat-header-cell *matHeaderCellDef> 申请时间 </th>
+      <td mat-cell *matCellDef="let element"> {{element.created_at | date:'short'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="reviewed_at">
+      <th mat-header-cell *matHeaderCellDef> 审核时间 </th>
+      <td mat-cell *matCellDef="let element"> {{element.reviewed_at | date:'short'}} </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [length]="length" [pageSize]="environment.myApplyPageSize" showFirstLastButtons (page)="onPageChange($event)" hidePageSize="true"></mat-paginator>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onClose()">关闭</button>
+</mat-dialog-actions>

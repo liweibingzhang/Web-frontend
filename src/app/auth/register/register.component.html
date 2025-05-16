@@ -1,0 +1,33 @@
+<mat-card>
+  <h2>注册</h2>
+
+  <mat-form-field class="full-width">
+    <input matInput placeholder="用户名" [(ngModel)]="user.username">
+  </mat-form-field>
+
+  <mat-form-field class="full-width">
+    <input matInput type="password" placeholder="密码" [(ngModel)]="user.password">
+  </mat-form-field>
+
+  <mat-form-field class="full-width">
+    <input matInput type="email" placeholder="邮箱" [(ngModel)]="user.email">
+  </mat-form-field>
+
+  <mat-form-field class="full-width">
+    <input matInput placeholder="手机号" [(ngModel)]="user.phone">
+  </mat-form-field>
+
+  <mat-form-field class="full-width">
+    <input matInput placeholder="工号 / 学号" [(ngModel)]="user.role_id">
+  </mat-form-field>
+
+  <mat-form-field class="full-width">
+    <mat-label>角色</mat-label>
+    <mat-select [(ngModel)]="user.role">
+      <mat-option value="teacher">教师</mat-option>
+      <mat-option value="student">学生</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button mat-raised-button color="accent" (click)="register()">注册</button>
+</mat-card>

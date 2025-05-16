@@ -1,0 +1,152 @@
+<div class="container">
+    <h3>{{ component!.name }}</h3>
+    
+    <div class="three-column-layout">
+      <!-- 左侧列 -->
+      <div class="left-column">
+        <div id="kruskal-container" #kruskalContainer></div>
+        
+        <app-animation-controller
+          #animationController  
+          [animationSteps]="animationSteps"
+          [generateSteps]="generateKruskalSteps"
+          [resetAnimationSteps]="resetAnimationSteps"
+          [updateAnimationSteps]="updateAnimationSteps">
+        </app-animation-controller>
+
+        <div class="algorithm-description">
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title>Kruskal 算法</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <mat-tab-group>
+                  <mat-tab label="算法说明">
+                    <div class="tab-content">
+                      <pre>{{ getKruskalDescription().algorithm }}</pre>
+                    </div>
+                  </mat-tab>
+                  <mat-tab label="可视化说明">
+                    <div class="tab-content">
+                      <pre>{{ getKruskalDescription().visualization }}</pre>
+                    </div>
+                  </mat-tab>
+                </mat-tab-group>
+              </mat-card-content>
+            </mat-card>
+        </div>
+      </div>
+  
+      <!-- 中间列-->
+      <div class="middle-column">
+        <!-- 关键指标显示区域 -->
+        <div class="metrics-panel">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title>关键指标</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="metrics-grid">
+                <div class="metric-item">
+                  <div class="metric-label">总节点数</div>
+                  <div class="metric-value">{{ getTotalNodes() }}</div>
+                </div>
+                <div class="metric-item">
+                  <div class="metric-label">已选边数</div>
+                  <div class="metric-value">{{ animationController.currentStep >= 0 ? animationSteps[animationController.currentStep].mstEdges.length : 0 }}</div>
+                </div>
+                <div class="metric-item">
+                  <div class="metric-label">总权重</div>
+                  <div class="metric-value">{{ animationController.currentStep >= 0 ? getTotalWeight(animationSteps[animationController.currentStep].mstEdges) : 0 }}</div>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        
+        <!-- 权重矩阵展示 -->
+        <div class="weight-matrix-container" *ngIf="weightMatrix.length > 0">
+          <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                权重矩阵
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="matrix-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th *ngFor="let node of Array.from(nodeMapping.keys())">{{getNodeLabelByIndex(+node)}}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let row of weightMatrix; let i = index">
+                    <th>{{getNodeLabelByIndex(i)}}</th>
+                    <td *ngFor="let weight of row">
+                      {{weight === Infinity ? '∞' : weight}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </mat-expansion-panel>
+        </div>
+  
+        <!-- 并查集展示 -->
+        <div class="disjoint-sets-container" *ngIf="animationController.currentStep >= 0 || animationSteps.length > 0">
+          <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                并查集状态
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="disjoint-sets-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>节点</th>
+                    <th>父节点</th>
+                    <th>根节点</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let entry of getDisjointSetsData().array" [ngClass]="{'changed-row': entry.node !== entry.parent}">
+                    <td class="node-cell">{{getNodeLabelById(entry.node)}}</td>
+                    <td class="parent-cell" [ngClass]="{'highlight': entry.node !== entry.parent}">
+                      <span class="parent-value">{{getNodeLabelById(entry.parent)}}</span>
+                      <mat-icon *ngIf="entry.node !== entry.parent" class="change-icon">arrow_forward</mat-icon>
+                    </td>
+                    <td class="root-cell" [ngStyle]="{'background-color': getSetColor(entry.root)}">
+                      {{getNodeLabelById(entry.root)}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
+            <!-- 可视化分组展示 -->
+            <div class="sets-visualization">
+              <div *ngFor="let set of getDisjointSetsData().groups" class="set-group" [ngStyle]="{'border-color': getSetColor(set.root)}">
+                <div class="set-root">根: {{getNodeLabelById(set.root)}}</div>
+                <div class="set-members">
+                  <span *ngFor="let member of set.members" class="set-member">
+                    {{getNodeLabelById(member)}}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </div>
+      </div>
+  
+      
+      <!-- 右侧列：实例管理器 -->
+      <div class="right-column">
+        <app-instance-manager
+          (configUpdated)="onConfigUpdated($event)"
+          (generateRandomConfig)="onGenerateRandom()">
+        </app-instance-manager>
+      </div>
+    </div>
+</div>

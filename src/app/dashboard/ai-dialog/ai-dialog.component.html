@@ -1,0 +1,27 @@
+<h2 mat-dialog-title>AI 助手</h2>
+
+
+
+<mat-dialog-content>
+  <div class="dialog-content">
+    <div *ngFor="let dialog of dialogHistory">
+      <div [ngClass]="dialog.from === 'User' ? 'user-message' : 'ai-message'">
+        <strong>{{ dialog.from }}:</strong>
+         {{dialog.message}}
+          <!-- <markdown [data]="dialog.message"></markdown> -->
+      </div>
+    </div>
+    <div *ngIf="isLoading" class="loading-message">
+      <em>AI 正在思考中，请稍候...</em>
+    </div>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>请输入问题</mat-label>
+      <input matInput [(ngModel)]="userInput" placeholder="请输入你的问题">
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button (click)="onClose()">关闭</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()">提交问题</button>
+</mat-dialog-actions>

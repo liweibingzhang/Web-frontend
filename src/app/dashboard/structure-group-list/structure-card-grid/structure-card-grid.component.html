@@ -1,0 +1,29 @@
+<div class="page-header">
+  <h3>{{ group!.name }}</h3>
+  <button mat-mini-fab color="primary" (click)="addComponent()" aria-label="添加">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>
+
+<mat-grid-list cols="4" rowHeight="150px" gutterSize="8px">
+  <mat-grid-tile *ngFor="let component of components">
+    <mat-card class="component-card">
+      <button mat-icon-button class="delete-btn" (click)="deleteComponent(component)">
+        <mat-icon color="warn">close</mat-icon>
+      </button>
+      <div class="card-content" (click)="goToComponent(component)">
+        <img mat-card-image [src]="defaultImg" alt="Image for {{ component.name }}">
+        <mat-card-content>
+          <p>{{ component.name }}</p>
+        </mat-card-content>
+      </div>
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>
+
+<mat-paginator
+  [length]="lengths"
+  [pageSize]="environment.componentPageSize"
+  [hidePageSize]="true"
+  (page)="onPageChange($event)">
+</mat-paginator>

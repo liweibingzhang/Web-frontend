@@ -1,0 +1,53 @@
+<div class="animation-controls">
+    <div class="speed-control">
+        <mat-label>动画速度</mat-label>
+        <mat-slider class="speed-slider"
+                    [min]="100"
+                    [max]="1000"
+                    [step]="100"
+                    [discrete]="true">
+        <input matSliderThumb [(ngModel)]="animationSpeed"
+                (ngModelChange)="onSpeedChange($event)">
+        </mat-slider>
+    </div>
+
+    <div class="control-buttons">
+        <button mat-raised-button color="primary" 
+        (click)="startAnimation()" 
+        [disabled]="isAnimating && !isPaused">
+        开始
+        </button>
+        <button mat-raised-button 
+        (click)="pauseAnimation()" 
+        [disabled]="!isAnimating || isPaused">
+        暂停
+        </button>
+        <button mat-raised-button 
+        (click)="resumeAnimation()" 
+        [disabled]="!isPaused">
+        继续
+        </button>
+        <button mat-raised-button color="warn" 
+        (click)="resetAnimation()">
+        重置
+        </button>
+    </div>
+
+    <div class="step-control">
+        <h4>单步执行</h4>
+        <div class="step-buttons">
+        <button mat-icon-button (click)="onStepBackward()" 
+                [disabled]="!canStepBackward || isAnimating"
+                matTooltip="上一步"
+                matTooltipPosition="above">
+            <mat-icon>skip_previous</mat-icon>
+        </button>
+        <button mat-icon-button (click)="onStepForward()" 
+                [disabled]="!canStepForward || isAnimating"
+                matTooltip="下一步"
+                matTooltipPosition="above">
+            <mat-icon>skip_next</mat-icon>
+        </button>
+        </div>
+    </div>
+</div>

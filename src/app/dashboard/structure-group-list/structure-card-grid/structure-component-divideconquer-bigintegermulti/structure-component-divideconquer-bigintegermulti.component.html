@@ -1,0 +1,218 @@
+<!-- HTML 结构 -->
+<div class="container">
+  <!-- 算法描述 -->
+  <!-- <mat-accordion class="problem-description">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>🧮 大整数乘法算法描述</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="description-content">
+        <h3>Karatsuba算法原理</h3>
+        <ol>
+          <li>将大整数分为高位(a)、低位(b)</li>
+          <li>递归计算三个乘积：a*c, b*d, (a+b)*(c+d)</li>
+          <li>合并结果：ac×10ⁿ + (中项 - ac - bd)×10ⁿ/² + bd</li>
+        </ol>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion> -->
+    <mat-accordion class="problem-description">
+    <!-- 算法描述面板 -->
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>🧮 大整数乘法算法描述</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="description-content">
+        <h3>Karatsuba算法定义</h3>
+        <p>通过分治策略将两个n位数相乘的时间复杂度降低到O(n<sup>log₂³</sup>) ≈ O(n<sup>1.585</sup>)</p>
+        <p>形式化描述：</p>
+        <ul>
+          <li>输入：两个n位整数X和Y</li>
+          <li>输出：乘积X×Y</li>
+          <li>约束：n必须是2的幂（可通过填充满足）</li>
+        </ul>
+      </div>
+    </mat-expansion-panel>
+
+    <!-- 分治策略面板 -->
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>💡 分治核心思路</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="description-content">
+        <h3>关键分解步骤</h3>
+        <pre>
+X = A×10<sup>m</sup> + B
+Y = C×10<sup>m</sup> + D
+        </pre>
+        
+        <h3>乘积公式</h3>
+        <pre>
+X×Y = AC×10<sup>2m</sup> 
+      + [(A+B)(C+D)-AC-BD]×10<sup>m</sup>
+      + BD
+        </pre>
+        
+        <h3>复杂度优势</h3>
+        <p>传统算法：O(n²) <br>
+          分治算法：T(n) = 3T(n/2) + O(n) → O(n<sup>1.585</sup>)</p>
+      </div>
+    </mat-expansion-panel>
+
+    <!-- 实现步骤面板 -->
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>🔧 实现步骤详解</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="description-content">
+        <ol>
+          <li>递归终止条件：当n ≤ 2时直接计算</li>
+          <li>分割数字：将X/Y分为高位(A/C)和低位(B/D)</li>
+          <li>递归计算：
+            <ul>
+              <li>AC = multiply(A, C)</li>
+              <li>BD = multiply(B, D)</li>
+              <li>(A+B)(C+D) = multiply(A+B, C+D)</li>
+            </ul>
+          </li>
+          <li>合并结果：按公式组合三个乘积</li>
+        </ol>
+        <p>关键优化：通过代数变形将4次乘法降为3次</p>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <div class="main-content">
+    <!-- 左侧递归树可视化 -->
+    <div class="tree-container">
+        <!-- 添加步骤说明 -->
+        <!-- <mat-card class="step-guide">
+        <h3>当前操作说明</h3>
+        <div class="guide-content">
+            <div [innerHTML]="currentGuide"></div>
+            <div class="hint" *ngIf="!currentGuide">点击步骤查看详细说明 →</div>
+        </div>
+        </mat-card> -->
+      <div class="tree" [style.--depth]="maxDepth">
+          <!-- 连接线系统 -->
+             <div class="node-connection-system">
+                <ng-container *ngFor="let line of connectionLines">
+                <div *ngIf="line.type === 'horizontal'"
+                    class="connection-line connection-line--horizontal"
+                    [style.left.%]="line.x1"
+                    [style.width.%]="line.x2 - line.x1"
+                    
+                    [style.top.px]="line.y +80">
+                </div>
+                
+                <div *ngIf="line.type === 'vertical'"
+                    class="connection-line connection-line--vertical"
+                    [style.left.%]="line.x"
+                    [style.top.px]="line.y1+40"
+                    [style.height.px]="line.y2 - line.y1-40">
+                </div>
+                </ng-container>
+            </div>
+         
+
+         <!-- 优化节点渲染 -->
+        <!-- <div *ngFor="let node of visibleNodes" 
+             class="tree-node"
+             [style.left.%]="node.positionX"
+             [style.top.px]="node.depth * 100 + 50"
+             [class.active]="currentStep === node.step">
+          <div class="node-content">
+            <span class="operation">{{node.operation}}</span>
+            <div class="numbers">{{node.x}} × {{node.y}}</div>
+            <div class="result">{{node.result || '?'}}</div>
+          </div>
+          <div class="connector" *ngIf="node.depth < maxDepth"></div>
+        </div> -->
+          <div *ngFor="let node of visibleNodes" 
+          
+                class="tree-node {{node.operation}}"
+                [style.left.%]="node.positionX"
+                [style.top.px]="node.depth * 120 + 30"
+                [class.active]="node.status === 'active'">
+                <div class="node-content">
+                <div class="operation-label">{{getOperationLabel(node.operation)}}</div>
+                <div class="expression">{{node.x}} × {{node.y}}</div>
+                <div class="result">{{node.result || '?'}}</div>
+                </div>
+                <!-- <div class="connector" *ngIf="node.depth < maxDepth"></div> -->
+          </div>
+          <!-- <div *ngFor="let node of steps" 
+          
+                class="tree-node {{node.operation}}"
+                [style.left.%]="node.positionX"
+                [style.top.px]="node.depth * 120 + 30"
+                [class.active]="node.status === 'active'">
+                <div class="node-content">
+                <div class="operation-label">{{getOperationLabel(node.operation)}}</div>
+                <div class="expression">{{node.x}} × {{node.y}}</div>
+                <div class="result">{{node.result || '?'}}</div>
+                </div>
+          </div> -->
+        </div>
+
+
+
+
+      </div>
+
+
+ 
+
+    <!-- 右侧控制面板 -->
+    <div class="panel">
+      <!-- <mat-card class="config-section">
+        <mat-form-field>
+          <input matInput [(ngModel)]="num1" placeholder="输入第一个大整数">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput [(ngModel)]="num2" placeholder="输入第二个大整数">
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="generateSteps()">生成递归树</button>
+      </mat-card> -->
+      <mat-card class="config-section">
+        <mat-form-field class="full-width">
+          <input matInput [(ngModel)]="num1" placeholder="输入第一个大整数">
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <input matInput [(ngModel)]="num2" placeholder="输入第二个大整数">
+        </mat-form-field>
+        <button mat-raised-button 
+                color="primary" 
+                class="full-width"
+                (click)="generateSteps()"
+                
+                >
+          生成递归树
+        </button>
+        <button mat-stroked-button color="warn" class="ai-button" (click)="aiHelper()">AI 助手</button>
+
+      </mat-card>
+
+      <app-animation-controller
+        [animationSteps]="steps"
+        [generateSteps]="generateSteps"
+        [resetAnimationSteps]="resetState"
+        [updateAnimationSteps]="updateState">
+      </app-animation-controller>
+
+      <mat-card class="metrics">
+        <h3>关键指标</h3>
+        <div>递归深度: {{currentDepth}}/{{maxDepth}}</div>
+        <div>乘法次数: {{multiplyCount}}</div>
+        <div>加法次数: {{addCount}}</div>
+      </mat-card>
+      <!-- 在右侧面板的 metrics 下方添加 -->
+        <mat-card class="description">
+        <h3>步骤说明</h3>
+        <div class="step-description">
+            {{ currentStepDescription || '点击步骤查看详细说明...' }}
+        </div>
+        </mat-card>
+    </div>
+  </div>
+</div>

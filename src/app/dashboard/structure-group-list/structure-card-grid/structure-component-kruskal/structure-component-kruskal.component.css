@@ -1,0 +1,210 @@
+.container {
+    height: 100%;
+    overflow: auto;
+  }
+  
+  .three-column-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr 300px; 
+    gap: 20px;
+  }
+  
+  .left-column {
+    display: flex;
+    flex-direction: column;
+    width: 460px;
+    gap: 10px;
+  }
+  
+  #kruskal-container {
+    width: 100%;
+    height: 300px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    overflow: hidden; /* 确保内容不溢出 */
+    position: relative; /* 为绝对定位的子元素提供参考 */
+  }
+  
+  .middle-column {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 380px;
+  }
+  
+  .right-column {
+    min-width: 300px;
+  }
+  
+  .tab-content {
+    padding: 15px;
+    white-space: pre-wrap;
+  }
+  
+  .button-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .config-panel {
+    margin-top: 20px;
+  }
+  
+  .json-editor {
+    width: 100%;
+    min-height: 200px;
+    font-family: monospace;
+    padding: 10px;
+  }
+  
+  .matrix-table {
+    overflow-x: auto;
+    max-width: 100%;
+  }
+  
+  .matrix-table table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  .matrix-table th, .matrix-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  .matrix-table th {
+    background-color: #f2f2f2;
+  }
+  
+  .disjoint-sets-container {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .disjoint-sets-table {
+    margin-bottom: 20px;
+    overflow-x: auto;
+  }
+
+  .disjoint-sets-table table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .disjoint-sets-table th {
+    background-color: #f5f5f5;
+    padding: 8px;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .disjoint-sets-table td {
+    padding: 8px;
+    text-align: center;
+    border: 1px solid #e0e0e0;
+  }
+
+  .changed-row {
+    animation: highlight-row 1.5s ease;
+  }
+
+  .highlight {
+    background-color: #e8f5e9;
+    font-weight: bold;
+    position: relative;
+  }
+
+  .change-icon {
+    font-size: 16px;
+    color: #4caf50;
+    vertical-align: middle;
+    margin-left: 5px;
+  }
+
+  .root-cell {
+    font-weight: bold;
+    color: white;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+
+  /* 集合可视化样式 */
+  .sets-visualization {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .set-group {
+    border: 2px solid;
+    border-radius: 8px;
+    padding: 10px;
+    min-width: 100px;
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+
+  .set-root {
+    font-weight: bold;
+    margin-bottom: 5px;
+    padding: 3px;
+    border-radius: 4px;
+    text-align: center;
+  }
+
+  .set-members {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .set-member {
+    display: inline-block;
+    padding: 3px 8px;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+  }
+
+  @keyframes highlight-row {
+    0% { background-color: transparent; }
+    30% { background-color: rgba(76, 175, 80, 0.2); }
+    100% { background-color: transparent; }
+  }
+  
+  .metrics-panel mat-card {
+    padding: 10px;
+  }
+  
+  .metrics-panel mat-card-header {
+    padding: 5px;
+    justify-content: center;
+  }
+  
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .metric-item {
+    text-align: center;
+    padding: 12px;
+    border-radius: 8px;
+  }
+  
+  .metric-label {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+  
+  .metric-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2196f3;
+  }
+    
+  

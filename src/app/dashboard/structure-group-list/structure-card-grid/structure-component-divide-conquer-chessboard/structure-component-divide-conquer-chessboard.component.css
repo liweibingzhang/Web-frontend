@@ -1,0 +1,78 @@
+/* structure-component-divide-conquer-chessboard.component.css */
+/* .container {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 24px;
+  padding: 24px;
+} */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  min-height: 80vh;
+}
+
+.problem-description {
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.main-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 32px;
+  flex: 1;
+}
+
+.chessboard-container {
+  overflow: auto;
+  padding: 16px;
+}
+
+.chessboard {
+  display: grid;
+  gap: 2px;
+  background: #333;
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.cell {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease;
+}
+
+
+
+.control-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.row {
+  display: contents;
+}
+
+/* 新增特殊标记样式 */
+.special-marker {
+  width: 12px;
+  height: 12px;
+  background: #d32f2f;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* 分治步骤代码块样式 */
+.description-content pre {
+  background: #f5f5f5;
+  padding: 12px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  margin: 8px 0;
+}

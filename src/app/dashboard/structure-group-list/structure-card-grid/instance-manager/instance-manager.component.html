@@ -1,0 +1,36 @@
+<div class="panel">
+    <mat-form-field>
+        <mat-label>选择实例</mat-label>
+        <mat-select [(ngModel)]="selectedInstance" (selectionChange)="onInstanceChange($event)">
+            <mat-option *ngFor="let instance of instances" [value]="instance">
+                {{ instance.name }}
+                <button
+                  mat-icon-button
+                  color="warn"
+                  class="delete-button"
+                  (click)="deleteInstance(instance); $event.stopPropagation()"
+                  matTooltip="删除分组"
+                >
+                  <mat-icon *ngIf="instance !== selectedInstance">delete</mat-icon>
+                </button>
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <div class="button-row">
+        <button mat-raised-button color="primary" (click)="saveInstance()">保存实例</button>
+        <button mat-raised-button color="accent" (click)="exportInstance()">导出实例</button>
+    </div>
+    <button mat-raised-button color="primary" (click)="generateRandom()">随机生成</button>
+    <button mat-stroked-button color="warn" (click)="aiHelper()">AI 助手</button>
+
+    <div class="config-panel">
+        <h3>配置详情(可修改并保存)</h3>
+        <mat-card>
+        <textarea matInput rows="10" [(ngModel)]="selectedJsonconfig" 
+            (ngModelChange)="onConfigChange()"
+            placeholder="编辑配置..." class="json-editor">
+        </textarea>
+        </mat-card>
+    </div>
+</div>

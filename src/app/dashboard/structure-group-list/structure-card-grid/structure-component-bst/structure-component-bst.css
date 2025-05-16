@@ -1,0 +1,20 @@
+.full-width {
+  width: 100%;
+}
+
+.json-editor {
+  font-family: monospace;
+  font-size: 14px;
+}
+
+.button-row button {
+  margin-right: 8px;
+}
+
+.panel mat-form-field {
+  width: 100%;
+}
+
+.mat-select-panel {
+  overflow: visible !important;
+}

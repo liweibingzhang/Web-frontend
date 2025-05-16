@@ -1,0 +1,36 @@
+mat-list-item {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* 图像和文字之间的间距 */
+  height: 64px; /* 可以根据需要调整高度 */
+}
+
+/*减小图像大小*/
+.group-avatar {
+  height: 40px;
+  aspect-ratio: 1; /* 保持图像为正方形 */
+  object-fit: cover;
+  border-radius: 50%; /* 可选：圆形头像 */
+}
+
+.group-name {
+  font-size: 16px;
+  align-self: center;
+  margin-left: 20px;
+}
+
+.group-description {
+  font-size: 14px;
+  color: #666666;
+  align-self: center;
+  margin-left: 20px;
+}
+
+.add-button-container {
+  margin-bottom: 10px;
+  text-align: right;
+}
+
+.delete-button {
+  margin-left: auto;
+}

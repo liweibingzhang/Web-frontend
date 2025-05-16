@@ -1,0 +1,131 @@
+<div class="container">
+  <!-- 在.container的第一个子元素位置添加 -->
+  <mat-accordion class="problem-description">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>👑 N皇后问题描述</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="description-content">
+        <h3>N皇后问题定义</h3>
+        <p>在N×N的棋盘上放置N个皇后，使得它们彼此不能互相攻击（即任意两个皇后不能处于同一行、同一列或同一对角线）。</p>
+        <p>形式化描述：</p>
+        <ul>
+          <li>输入：棋盘大小N</li>
+          <li>输出：所有合法的皇后摆放方案</li>
+        </ul>
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>💡 回溯算法核心思路</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="description-content">
+        <h3>关键策略</h3>
+        <ol>
+          <li>逐行放置皇后，确保每行只有一个</li>
+          <li>使用列、对角线冲突检测</li>
+          <li>回溯无效的局部解</li>
+        </ol>
+        
+        <h3>冲突检测</h3>
+        <pre>
+  isSafe(row, col):
+    检查同一列
+    检查左上对角线
+    检查右上对角线
+        </pre>
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>🔧 解决步骤详解</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="description-content">
+        <h3>回溯算法步骤</h3>
+        <ol>
+          <li>从第0行开始尝试放置</li>
+          <li>对每一列位置进行安全检查</li>
+          <li>安全时放置皇后并递归下一行</li>
+          <li>发现冲突时回溯到上一步</li>
+          <li>当所有行都成功放置时记录解</li>
+        </ol>
+        <p>时间复杂度：O(N!)</p>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <!-- 原有内容包裹在新容器中 -->
+  <div class="main-content">
+
+    <!-- 左侧：棋盘可视化 -->
+    <div class="content-left">
+      <h3>N皇后问题可视化 (N={{nValue}})</h3>
+      <div class="chessboard">
+        <div *ngFor="let row of board; let i = index" class="row">
+          <div *ngFor="let cell of row; let j = index" 
+              class="cell"
+              [class.queen]="cell === 1"
+              [class.conflict]="isConflictCell(i, j)"
+              [class.current-step]="isCurrentStep(i,j)">
+              <!-- 仅在无冲突时显示皇后图标 -->
+              <mat-icon *ngIf="cell === 1 && !isConflictCell(i, j)">check_circle</mat-icon>
+              <!-- 冲突时显示叉图标 -->
+              <mat-icon *ngIf="isConflictCell(i, j)" >close</mat-icon>
+              <!-- <mat-icon *ngIf="isConflictCell(i, j)" class="conflict-icon">close</mat-icon> -->
+              <!-- <mat-icon *ngIf="cell === 1">check_circle</mat-icon>
+              <mat-icon *ngIf="isConflictCell(i, j)" class="conflict-icon">close</mat-icon>             -->
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右侧：控制面板 -->
+    <div class="panel">
+      <!-- AI 助手 -->
+      <button mat-stroked-button color="warn" class="ai-button" (click)="aiHelper()">AI 助手</button>
+      <!-- N值选择 -->
+      <mat-card class="config-section">
+        <mat-form-field appearance="fill">
+          <mat-label>选择N值</mat-label>
+          <mat-select [(value)]="nValue" (selectionChange)="initBoard()">
+            <mat-option *ngFor="let n of [4,5,6,7,8,9]" [value]="n">{{n}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="startBacktracking()">开始求解</button>
+      </mat-card>
+
+      <!-- 动画控制 -->
+      <app-animation-controller
+        [animationSteps]="steps"
+        [generateSteps]="generateSteps"
+        [resetAnimationSteps]="resetState.bind(this)"
+        [updateAnimationSteps]="updateState">
+      </app-animation-controller>
+
+
+
+      <!-- 解决方案列表 -->
+       <mat-card class="solutions-panel">
+        <div class="solutions-header">
+          <h3>找到的解 ({{solutions.length}})</h3>
+        </div>
+        <div class="solutions-content">
+          <div class="solution-item" *ngFor="let solution of solutions; let idx = index">
+            <span>解 {{idx + 1}}</span>
+            <button mat-icon-button (click)="showSolution(solution, idx)">
+              <mat-icon>visibility</mat-icon>
+            </button>
+          </div>
+        </div>
+      </mat-card>
+
+    </div>
+  
+  
+  </div>
+
+
+</div>

@@ -1,0 +1,286 @@
+/* structure-component-divideconquer-bigintegermulti.component.css */
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  min-height: 80vh;
+}
+
+.problem-description {
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.description-content sup {
+  font-size: 0.8em;
+  vertical-align: super;
+}
+
+.description-content pre {
+  background: #fff;
+  padding: 12px;
+  border-radius: 4px;
+  overflow-x: auto;
+  line-height: 1.5;
+  margin: 8px 0;
+}
+.description-content h3 {
+  color: #2196F3;
+  border-bottom: 2px solid #BBDEFB;
+  padding-bottom: 4px;
+  margin: 16px 0 12px;
+}
+
+.description-content ol ul {
+  list-style-type: circle;
+  margin-left: 32px;
+}
+
+mat-expansion-panel {
+  margin-bottom: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08) !important;
+}
+
+mat-expansion-panel-header {
+  background: #f8f9fa !important;
+  border-radius: 8px !important;
+}
+
+.main-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 32px;
+  flex: 1;
+}
+
+.content-left {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.config-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+}
+
+.metrics {
+  padding: 24px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+/* 其他原有样式保持不变 */
+/* .tree-container {
+  position: relative;
+  height: 800px;
+  overflow: auto; /* 添加滚动条 */
+  /* border: 1px solid #eee; */
+  /* min-width: 1200px; 确保足够宽度 */
+  /* background: #f8f9fa;
+} */ 
+.tree-container {
+  position: relative;
+  height: 800px;
+  overflow: auto;
+  border: 1px solid #eee;
+  max-width: 100%;   
+  background: #f8f9fa;
+  overflow-x: auto; 
+  overflow-y: visible;
+}
+/* .tree-container {
+  position: relative;
+  width: 100%; 
+  overflow-x: auto;
+} */
+
+
+.tree {
+  position: relative;
+  min-width: auto; /* 根据层级动态调整 */
+  height: 100%;
+  padding: 0 20px; /* 添加内边距 */
+  /* min-width: 100%; 确保水平空间足够 */
+}
+
+.tree-node {
+  position: absolute;
+  left: calc(var(--positionX) * 1%); /* 动态位置 */
+  top: calc(var(--depth) * 180px + 30px); /* 垂直间距 */
+  transform: translateX(-50%); /* 水平居中 */
+  transition: all 0.3s ease;
+  z-index: 1;
+  min-width: 160px;
+}
+
+
+
+/* .tree-node {
+  transition: all 0.5s ease;
+  opacity: 0;
+  transform: translateY(-20px);
+  
+  &.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+} */
+
+/* 节点连接线系统 */
+.node-connection-system {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+
+
+/* 调整连接线样式 */
+.connector {
+  position: absolute;
+  bottom: -60px;
+  left: 50%;
+  width: 2px;
+  height: 60px;
+  /* background: #2196F3; */
+  background: linear-gradient(to bottom, #2196F3 60%, transparent);
+}
+
+/* 添加层级线 */
+.level-line {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: #BBDEFB;
+  z-index: 1;
+}
+
+
+.node-content {
+  padding: 12px;
+  background: #e3f2fd;
+  border: 2px solid #2196F3;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.active .node-content {
+  background: #BBDEFB;
+  box-shadow: 0 0 8px rgba(33,150,243,0.3);
+}
+
+/* 操作类型颜色 */
+/* .split { border-color: #FF9800; }
+.multiply { border-color: #4CAF50; }
+.merge { border-color: #9C27B0; } */
+
+.description-content {
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.description-content h3 {
+  color: #2196F3;
+  margin: 12px 0 8px;
+  font-size: 1.2em;
+}
+
+.description-content ol {
+  padding-left: 24px;
+  line-height: 1.6;
+}
+
+/* 步骤引导面板 */
+.step-guide {
+  margin-top: 20px;
+  background: #fff;
+  border: 2px solid #BBDEFB;
+}
+
+.guide-content {
+  padding: 16px;
+  min-height: 120px;
+  
+  pre {
+    background: #e3f2fd;
+    padding: 8px;
+    border-radius: 4px;
+    margin: 8px 0;
+  }
+}
+
+.hint {
+  color: #757575;
+  font-style: italic;
+  text-align: center;
+  padding: 20px;
+}
+
+/* 节点样式增强 */
+.operation-label {
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  font-weight: bold;
+  
+  .split & { background: #FF9800; }
+  .multiply & { background: #4CAF50; }
+  .merge & { background: #9C27B0; }
+}
+
+.expression {
+  font-family: monospace;
+  margin: 8px 0;
+  color: #333;
+}
+
+.result {
+  font-weight: bold;
+  color: #2196F3;
+  font-size: 1.1em;
+}
+
+.connection-line {
+  position: absolute;
+  background: #2196F3;
+  color: black;
+  transition: all 0.5s ease;
+  z-index: 0; /* 确保连线在节点下方 */
+
+  &--horizontal {
+    height: 2px;
+    transform: translateY(-1px);
+    animation: lineExpand 0.5s forwards;
+  }
+
+  &--vertical {
+    width: 2px;
+    animation: lineExpandVertical 0.5s forwards;
+  }
+}
+
+@keyframes lineExpand {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes lineExpandVertical {
+  from { height: 0 }
+  to { height: 100% }
+}

@@ -1,0 +1,10 @@
+<mat-card>
+  <h2>登录</h2>
+  <mat-form-field class="full-width">
+    <input matInput placeholder="工号 / 学号" [(ngModel)]="user.role_id">
+  </mat-form-field>
+  <mat-form-field class="full-width">
+    <input matInput type="password" placeholder="密码" [(ngModel)]="user.password">
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="login()">登录</button>
+</mat-card>

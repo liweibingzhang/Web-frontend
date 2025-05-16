@@ -1,0 +1,32 @@
+<h2 class="title">我的分组</h2>
+
+<div class="add-button-container">
+  <button mat-raised-button color="primary" (click)="addGroup()">添加分组</button>
+  <button mat-raised-button color="primary" (click)="applyGroup()">申请权限</button>
+  <button mat-raised-button color="primary" (click)="showMyApply()">我的申请</button>
+</div>
+
+<mat-list>
+  <mat-list-item *ngFor="let group of groups" (click)="goToGroup(group)">
+    <img matListAvatar [src]="defaultImg" alt="{{ group.name }}" class="group-avatar" />
+    <span class="group-name">{{ group.name }}</span>
+    <span class="group-description">{{ group.description }}</span>
+    <button
+      mat-icon-button
+      color="warn"
+      class="delete-button"
+      (click)="deleteGroup(group); $event.stopPropagation()"
+      matTooltip="删除分组"
+    >
+      <mat-icon>delete</mat-icon>
+    </button>
+  </mat-list-item>
+</mat-list>
+
+<mat-paginator
+  [length]="lengths"
+  [pageSize]="environment.groupPageSize"
+  [hidePageSize]="true"
+  (page)="onPageChange($event)">
+</mat-paginator>
+

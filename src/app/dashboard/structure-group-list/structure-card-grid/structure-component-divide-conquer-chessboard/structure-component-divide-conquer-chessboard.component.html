@@ -1,0 +1,114 @@
+<!-- structure-component-divide-conquer-chessboard.component.html -->
+<div class="container">
+      <mat-accordion class="problem-description">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>🏰 棋盘覆盖问题描述</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="description-content">
+        <h3>问题定义</h3>
+        <p>在2<sup>n</sup>×2<sup>n</sup>的棋盘上，用L型骨牌覆盖除特殊方格外的所有区域，要求骨牌不重叠且完全覆盖。</p>
+        <ul>
+          <li>输入：棋盘尺寸（2<sup>n</sup>）、特殊方格位置</li>
+          <li>输出：骨牌覆盖方案及递归过程</li>
+        </ul>
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>💡 分治算法核心思路</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="description-content">
+        <h3>关键策略</h3>
+        <ol>
+          <li>将棋盘四等分为子棋盘</li>
+          <li>在交汇处放置L型骨牌</li>
+          <li>递归处理包含特殊方格的子棋盘</li>
+          <li>将其他三个子棋盘设为新问题</li>
+        </ol>
+        
+        <h3>递归函数定义</h3>
+        <pre>
+  coverChessboard(x, y, size, special):
+    if size == 2:
+        覆盖L型骨牌
+    else:
+        划分四个子棋盘
+        确定虚拟特殊点
+        递归调用子问题
+        </pre>
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>🔧 分治步骤详解</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="description-content">
+        <h3>算法执行流程</h3>
+        <ol>
+          <li>输入棋盘尺寸和初始特殊点</li>
+          <li>递归划分棋盘至2×2最小单元</li>
+          <li>在中心交汇处放置L型骨牌</li>
+          <li>标记三个新特殊点</li>
+          <li>递归处理四个子棋盘</li>
+        </ol>
+        <p>时间复杂度分析：T(n) = 4T(n/2) + O(1) → O(n<sup>2</sup>)</p>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <div class="main-content">
+     <!-- 左侧：棋盘可视化 -->
+    <div class="content-left">
+      <h3>棋盘覆盖可视化 (2^{{boardSize}}×2^{{boardSize}})</h3>
+      <div class="chessboard-container">
+        <!-- 棋盘尺寸动态绑定 -->
+<!-- <div class="chessboard" 
+     [style.gridTemplateColumns]="'repeat(' + (Math.pow(2, boardSize) )+ ', 1fr)'">
+          <div *ngFor="let row of board; let i = index" class="row">
+            <div *ngFor="let cell of row; let j = index" class="cell"
+                 [style.background]="cell ? tileColors[cell-1] : '#fff'">
+              <div *ngIf="cell === 0" class="special-marker"></div>
+            </div>
+          </div>
+        </div> -->
+      </div>
+    </div>
+
+    <!-- 右侧：算法步骤 -->
+    <div class="control-panel">
+    <mat-card>
+      <mat-form-field>
+        <mat-label>棋盘大小 (2^n)</mat-label>
+        <mat-select [(value)]="boardSize" (selectionChange)="initBoard()">
+          <mat-option *ngFor="let size of [2,3,4]" [value]="size">
+            2^{{size}} × 2^{{size}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+      <button mat-raised-button color="primary" 
+              (click)="startVisualization()">
+        开始可视化
+      </button>
+    </mat-card>
+<!-- 
+    <app-animation-controller
+      [animationSteps]="steps"
+      [generateSteps]="generateSteps"
+      [resetAnimationSteps]="initBoard"
+       (updateAnimationSteps)="updateBoard($event)"> 
+    </app-animation-controller> -->
+  </div>
+
+
+
+
+  </div>
+
+
+
+
+</div>

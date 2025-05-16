@@ -1,0 +1,56 @@
+<div class="container">
+  <!-- 左侧：标题 + 方块展示 -->
+  <div class="content-left">
+    <h3>{{ component!.name }}</h3>
+    <div class="square-row">
+      <div class="square-item" *ngFor="let item of items">
+        <svg viewBox="0 0 100 100" class="square-bg">
+          <rect x="0" y="0" width="100" height="100" rx="16" ry="16" fill="#e3f2fd" stroke="#2196f3" stroke-width="4"/>
+          <text x="50" y="55" text-anchor="middle" font-size="32" fill="#0d47a1" font-family="Arial">{{ item }}</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- 右侧：控制面板 -->
+  <div class="panel">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>选择实例</mat-label>
+      <mat-select [(value)]="selectedInstance" (selectionChange)="onInstanceChange($event)">
+        <mat-option *ngFor="let instance of instances" [value]="instance">{{ instance.name }}
+          <button
+          mat-icon-button
+          color="warn"
+          class="delete-button"
+          (click)="deleteInstance(instance); $event.stopPropagation()"
+          matTooltip="删除分组"
+        ><mat-icon *ngIf="instance !== selectedInstance">delete</mat-icon></button>
+        </mat-option>
+
+      </mat-select>
+    </mat-form-field>
+
+    <div class="button-row">
+      <button mat-raised-button color="primary" (click)="saveInstance()">保存实例</button>
+      <button mat-raised-button color="accent" (click)="exportInstance()">导出实例</button>
+    </div>
+
+    <button mat-stroked-button color="warn" class="ai-button" (click)="aiHelper()">AI 助手</button>
+
+      <!-- 右侧配置展示和编辑 -->
+    <div class="config-panel" fxFlex="50">
+      <h3>配置详情(可修改并保存)</h3>
+      <mat-card>
+        <!-- JSON 编辑区 -->
+        <textarea
+          matInput
+          rows="10"
+          [(ngModel)]="selectedJsonconfig"
+          (ngModelChange)="onConfigChange()"
+          placeholder="编辑配置..."
+          class="json-editor"
+        ></textarea>
+      </mat-card>
+    </div>
+  </div>
+</div>

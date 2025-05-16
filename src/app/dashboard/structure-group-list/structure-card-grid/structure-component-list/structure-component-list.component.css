@@ -1,0 +1,42 @@
+.container {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+  padding: 24px;
+}
+
+.content-left {
+  flex: 1;
+}
+
+.square-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.square-item {
+  width: 100px;
+  height: 100px;
+}
+
+.panel {
+  width: 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.button-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.ai-button {
+  width: 100%;
+}

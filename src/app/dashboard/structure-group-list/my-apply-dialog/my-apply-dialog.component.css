@@ -1,0 +1,5 @@
+::ng-deep .mat-dialog-container {
+  max-width: 90vw !important;
+  width: 80vw !important;
+  height: auto;
+}

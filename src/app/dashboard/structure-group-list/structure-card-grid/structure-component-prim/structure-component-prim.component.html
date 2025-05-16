@@ -1,0 +1,114 @@
+<div class="container">
+    <h3>{{ component!.name }}</h3>
+    
+    <div class="three-column-layout">
+      <!-- 左侧列 -->
+      <div class="left-column">
+        <div id="prim-container" #primContainer></div>
+        
+        <app-animation-controller
+          #animationController
+          [animationSteps]="animationSteps"
+          [generateSteps]="generatePrimSteps"
+          [resetAnimationSteps]="resetAnimationSteps"
+          [updateAnimationSteps]="updateAnimationSteps">
+        </app-animation-controller>
+      </div>
+  
+      <!-- 中间列-->
+      <div class="middle-column">
+        <div class="metrics-panel">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title>关键指标</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="metrics-grid">
+                <div class="metric-item">
+                  <div class="metric-label">已访问节点数</div>
+                  <div class="metric-value">{{ animationController.currentStep >= 0 ? animationSteps[animationController.currentStep].visitedNodes.length : 0 }}/{{ getTotalNodes() }}</div>
+                </div>
+                <div class="metric-item">
+                  <div class="metric-label">已选边数</div>
+                  <div class="metric-value">{{ animationController.currentStep >= 0 ? animationSteps[animationController.currentStep].mstEdges.length : 0 }}</div>
+                </div>
+                <div class="metric-item">
+                  <div class="metric-label">总权重</div>
+                  <div class="metric-value">{{ animationController.currentStep >= 0 ? getTotalWeight(animationSteps[animationController.currentStep].mstEdges) : 0 }}</div>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <div class="weight-matrix-container" *ngIf="weightMatrix.length > 0">
+          <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                权重矩阵
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="matrix-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th *ngFor="let node of Array.from(nodeMapping.keys())">{{getNodeLabelByIndex(+node)}}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let row of weightMatrix; let i = index">
+                    <th>{{getNodeLabelByIndex(i)}}</th>
+                    <td *ngFor="let weight of row">
+                      {{weight === Infinity ? '∞' : weight}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </mat-expansion-panel>
+        </div>
+
+        <div class="algorithm-description">
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title>Prim 算法</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <mat-tab-group>
+                  <mat-tab label="算法说明">
+                    <div class="tab-content">
+                      <pre>{{ getPrimDescription().algorithm }}</pre>
+                    </div>
+                  </mat-tab>
+                  <mat-tab label="可视化说明">
+                    <div class="tab-content">
+                      <pre>{{ getPrimDescription().visualization }}</pre>
+                    </div>
+                  </mat-tab>
+                </mat-tab-group>
+              </mat-card-content>
+            </mat-card>
+          </div>
+      </div>
+  
+      <!-- 右侧列：实例管理器 -->
+      <div class="right-column">
+        <div class="node-selector">
+          <mat-form-field appearance="outline">
+            <mat-label>选择起始节点</mat-label>
+            <mat-select [(ngModel)]="startNode">
+              <mat-option *ngFor="let node of availableNodes" [value]="node.id">
+                {{ node.label }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        
+        <app-instance-manager
+          (configUpdated)="onConfigUpdated($event)"
+          (generateRandomConfig)="onGenerateRandom()">
+        </app-instance-manager>
+      </div>
+    </div>
+</div>

@@ -1,0 +1,122 @@
+<div class="container">
+    <h3>{{ component!.name }}</h3>
+    
+    <div class="three-column-layout">
+      <!-- 左侧列 -->
+      <div class="left-column">
+        <div id="dijkstra-container" #dijkstraContainer></div>
+        
+        <app-animation-controller
+          #animationController
+          [animationSteps]="animationSteps"
+          [generateSteps]="generateDijkstraSteps"
+          [resetAnimationSteps]="resetAnimationSteps"
+          [updateAnimationSteps]="updateAnimationSteps">
+        </app-animation-controller>
+
+        <div class="algorithm-description">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title>Dijkstra 算法</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <mat-tab-group>
+                <mat-tab label="算法说明">
+                  <div class="tab-content">
+                    <pre>{{ getDijkstraDescription().algorithm }}</pre>
+                  </div>
+                </mat-tab>
+                <mat-tab label="可视化说明">
+                  <div class="tab-content">
+                    <pre>{{ getDijkstraDescription().visualization }}</pre>
+                  </div>
+                </mat-tab>
+              </mat-tab-group>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+  
+      <!-- 中间列-->
+      <div class="middle-column">
+        <!-- 权重矩阵展示 -->
+        <div class="weight-matrix-container" *ngIf="weightMatrix.length > 0">
+          <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                权重矩阵
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="matrix-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th *ngFor="let node of Array.from(nodeMapping.keys())">{{getNodeLabelByIndex(+node)}}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let row of weightMatrix; let i = index">
+                    <th>{{getNodeLabelByIndex(i)}}</th>
+                    <td *ngFor="let weight of row">
+                      {{weight === Infinity ? '∞' : weight}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </mat-expansion-panel>
+        </div>
+
+        <!-- 搜索过程展示 -->
+        <div class="search-process" *ngIf="animationController.currentStep >= 0">
+          <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                搜索过程
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="process-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>轮次</th>
+                    <th *ngFor="let node of Array.from(nodeMapping.keys())">{{getNodeLabelByIndex(+node)}}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let step of getUniqueSteps(); let i = index">
+                    <td>{{i + 1}}</td>
+                    <td *ngFor="let node of Array.from(nodeMapping.keys())" 
+                        [ngClass]="{'current-node': step.currentNode === node, 
+                                   'visited-node': step.visitedNodes.includes(node)}">
+                      {{step.distances.get(node) === Infinity ? '∞' : step.distances.get(node)}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </mat-expansion-panel>
+        </div>
+      </div>
+  
+      <!-- 右侧列：实例管理器 -->
+      <div class="right-column">
+        <div class="node-selector">
+          <mat-form-field appearance="outline">
+            <mat-label>选择起始节点</mat-label>
+            <mat-select [(ngModel)]="startNode">
+              <mat-option *ngFor="let node of availableNodes" [value]="node.id">
+                {{ node.label }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        
+        <app-instance-manager
+          (configUpdated)="onConfigUpdated($event)"
+          (generateRandomConfig)="onGenerateRandom()">
+        </app-instance-manager>
+      </div>
+    </div>
+</div>

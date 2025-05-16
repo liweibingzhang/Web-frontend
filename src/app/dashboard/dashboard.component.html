@@ -1,0 +1,22 @@
+<mat-drawer-container class="container">
+  <mat-drawer mode="side" opened class="sidenav">
+    <!-- 头像部分 -->
+    <div class="avatar-section" (click)="goToProfile()">
+      <img src="avatar.jpg" class="avatar" alt="头像">
+      <p>{{ user?.username }}</p>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <!-- 分类导航菜单 -->
+    <mat-nav-list>
+      <mat-list-item (click)="navigateTo('structure-groups')">数据结构与算法</mat-list-item>
+      <mat-list-item (click)="navigateTo('apply-review')">申请审核</mat-list-item>
+    </mat-nav-list>
+  </mat-drawer>
+
+  <!-- 主内容展示区，嵌套路由出口 -->
+  <div class="main-content">
+    <router-outlet></router-outlet>
+  </div>
+</mat-drawer-container>

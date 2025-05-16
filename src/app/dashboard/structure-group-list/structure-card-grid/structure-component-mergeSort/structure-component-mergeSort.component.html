@@ -1,0 +1,109 @@
+<div class="container">
+  <div class="content-left">
+    <h3>{{ component!.name }}</h3>
+    
+    <div class="visualization-area">
+      <div class="square-row">
+        <div class="square-item" *ngFor="let item of items; let i = index">
+          <svg viewBox="0 0 100 140">
+            <!-- 数值方块 -->
+            <rect x="10" y="10" width="80" height="80" rx="5"
+              [ngClass]="{
+                'comparing': animationController.currentStep >= 0 && animationSteps[animationController.currentStep].comparing.includes(i),
+                'merged': animationController.currentStep >= 0 && animationSteps[animationController.currentStep].merged.includes(i),
+                'merge-range': animationController.currentStep >= 0 && 
+                  i >= animationSteps[animationController.currentStep].mergeRange[0] && 
+                  i <= animationSteps[animationController.currentStep].mergeRange[1]
+              }"/>
+            
+            <!-- 数值文本 -->
+            <text class="number-text" x="50" y="55" text-anchor="middle" dominant-baseline="middle">{{item}}</text>
+            
+            <!-- 指示 -->
+            <g *ngIf="animationController.currentStep >= 0">
+              <text *ngIf="animationSteps[animationController.currentStep].leftArray.includes(item)"
+                    class="left-array-marker" 
+                    x="45" y="120">L</text>
+              
+              <text *ngIf="animationSteps[animationController.currentStep].rightArray.includes(item)"
+                    class="right-array-marker" 
+                    x="45" y="120">R</text>
+              
+              <text *ngIf="animationSteps[animationController.currentStep].currentPosition === i"
+                    class="current-position" 
+                    x="43" y="135">▲</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="layout-container">
+      <div class="visualization-control">
+        <!-- 左列上部：关键指标显示区域 -->
+        <div class="metrics-panel">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title>关键指标</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="metrics-grid">
+                <div class="metric-item">
+                  <div class="metric-label">比较次数</div>
+                  <div class="metric-value">{{ animationController.currentStep >= 0 ? animationSteps[animationController.currentStep].compareCount : 0 }}</div>
+                </div>
+                <div class="metric-item">
+                  <div class="metric-label">交换次数</div>
+                  <div class="metric-value">{{ animationController.currentStep >= 0 ? animationSteps[animationController.currentStep].swapCount : 0 }}</div>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <app-animation-controller
+          #animationController
+          [animationSteps]="animationSteps"
+          [generateSteps]="generateMergeSortSteps"
+          [resetAnimationSteps]="resetAnimationSteps"
+          [updateAnimationSteps]="updateAnimationSteps">
+        </app-animation-controller>
+      </div>
+
+      <!-- 右列：算法描述 -->
+      <div class="algorithm-description">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>归并排序算法</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-tab-group>
+              <mat-tab label="算法说明">
+                <div class="tab-content">
+                  <pre>{{ getMergeSortDescription().algorithm }}</pre>
+                </div>
+              </mat-tab>
+              <mat-tab label="可视化说明">
+                <div class="tab-content">
+                  <pre>{{ getMergeSortDescription().visualization }}</pre>
+                </div>
+              </mat-tab>
+            </mat-tab-group>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+
+  <!-- 右侧：控制面板 -->
+  <div class="panel">
+    <app-instance-manager
+      (configUpdated)="onConfigUpdated($event)"
+      (generateRandomConfig)="onGenerateRandom()">
+    </app-instance-manager>
+  </div>
+</div>
+
+
+
+

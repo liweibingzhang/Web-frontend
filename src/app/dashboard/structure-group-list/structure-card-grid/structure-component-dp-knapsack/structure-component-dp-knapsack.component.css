@@ -1,0 +1,486 @@
+/* structure-component-dp-knapsack.component.css */
+
+/* structure-component-dp-knapsack.component.css */
+/* 全局字体调整 */
+body {
+  font-size: 14px;
+}
+
+h3 {
+  font-size: 1.4em;
+  margin-bottom: 1.2em;
+}
+
+.cdk-drag-preview {
+  opacity: 0.5;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* structure-component-dp-knapsack.component.css */
+.item-header {
+  position: relative;
+  font-weight: 500;
+  margin-bottom: 8px;
+  padding-right: 24px; /* 为删除按钮留出空间 */
+}
+
+.delete-item-btn {
+  position: absolute;
+  top: -8px;
+  right: 0px;
+  width: 24px;
+  height: 24px;
+  font-size: 16px;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.delete-item-btn:hover {
+  opacity: 1;
+  background-color: rgba(255, 0, 0, 0.1);
+}
+
+/* structure-component-dp-knapsack.component.css */
+/* 问题描述区域 */
+.problem-description {
+  margin: 16px 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.description-content {
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.description-content h3 {
+  color: #2196F3;
+  margin: 12px 0 8px;
+  font-size: 1.2em;
+}
+
+.description-content pre {
+  background: #fff;
+  padding: 12px;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+.description-content ol {
+  padding-left: 24px;
+  line-height: 1.6;
+}
+
+.description-content li {
+  margin-bottom: 8px;
+}
+
+.mat-expansion-panel-header-title {
+  color: #2196F3;
+  font-weight: 500;
+}
+
+/* 顶部物品列表 */
+.item-banner {
+  padding: 16px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 20px;
+}
+
+.item-list {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+
+.item-card {
+  flex: 0 0 140px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 12px;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.item-properties {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.property {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px;
+  background: #f5f5f5;
+  border-radius: 4px;
+}
+
+.label {
+  font-size: 0.9em;
+  color: #666;
+}
+
+.value {
+  font-weight: 500;
+  color: #2196F3;
+}
+
+/* 主体布局 */
+/* .main-content {
+  display: grid;
+  grid-template-columns: 280px 1fr 300px;
+  gap: 24px;
+  height: calc(100vh - 180px);
+} */
+.main-content {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr; /* 左侧占三分之一 */
+  gap: 24px;
+  height: calc(100vh - 180px);
+  /* height: calc(100vh - 250px); 调整高度 */
+}
+
+/* 左侧控制区 */
+/* .left-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+} */
+
+/* 左侧控制区 */
+.left-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: fit-content; /* 修改为根据内容自适应高度 */
+  max-height: calc(100vh - 220px); /* 确保不超过视口高度 */
+}
+
+/* 结果面板 */
+.result-panel {
+  margin-top: 20px;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  animation: fadeIn 0.5s ease-out;
+  margin-bottom: 20px; /* 添加底部边距 */
+}
+
+/* 动画控制器 */
+.animation-controller {
+  flex-grow: 1; /* 让动画控制器占据剩余空间 */
+}
+
+.control-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.metrics-panel {
+  margin-top: 20px;
+  padding: 16px;
+  background: #fafafa;
+  border-radius: 8px;
+}
+
+.metric {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.metric:last-child {
+  border-bottom: none;
+}
+
+/* 中间矩阵区 */
+.matrix-panel {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.matrix-container {
+  flex: 1;
+  overflow: auto;
+  border: 1px solid #eee;
+  border-radius: 6px;
+}
+
+.dp-matrix {
+  font-size: 0.85em;
+  min-width: fit-content;
+}
+
+
+
+/* 右侧配置区保持原有样式 */
+
+
+
+/* 左侧列 */
+
+
+.item-row {
+  display: flex;
+  gap: 16px;
+  padding: 12px;
+  overflow-x: auto;
+  background: #f5f5f5;
+  border-radius: 8px;
+}
+
+.item-block {
+  flex-shrink: 0;
+  width: 120px;
+  padding: 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: white;
+}
+
+.item-title {
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: #2196F3;
+}
+
+.item-property {
+  display: grid;
+  gap: 4px;
+  font-size: 0.9em;
+}
+
+/* 中间列 */
+.middle-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.matrix-control-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+
+.control-section {
+  flex: 1;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr 1fr;
+}
+
+.metrics-panel {
+  height: 100%;
+}
+
+/* .metric-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding: 12px;
+} */
+
+.metric-item {
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.metric-label {
+  color: #666;
+  font-size: 0.85em;
+  margin-bottom: 4px;
+}
+
+.metric-value {
+  font-size: 1.1em;
+  font-weight: 500;
+  color: #4CAF50;
+}
+
+.capacity-selector {
+  width: 100%;
+  align-self: start;
+}
+
+/* structure-component-dp-knapsack.component.css */
+/* 新增/修改样式 */
+.dp-matrix-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.dp-table-container {
+  width: 100%;
+  overflow: auto;
+  flex: 1;
+}
+
+/* .dp-table {
+  width: 100%;
+  min-width: fit-content;
+  table-layout: fixed;
+}
+
+.capacity-header {
+  width: 40px;
+  max-width: 40px;
+  min-width: 40px;
+  font-size: 0.8em;
+}
+
+.axis-header {
+  width: 60px;
+  background: #f8f9fa !important;
+  position: sticky;
+  left: 0;
+  z-index: 1;
+} */
+
+.metric-grid {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.full-width {
+  grid-column: 1 / -1;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+}
+
+/* 修改指标值颜色 */
+.metric-value {
+  color: #2196F3;
+}
+
+/* 容量状态特殊样式 */
+.metric-item.full-width .metric-value {
+  font-size: 1.4em;
+  color: #4CAF50;
+}
+/* kimi修改 */
+.dp-table {
+  width: 100%;
+  min-width: fit-content;
+  table-layout: auto; /* 修改表格布局为自动 */
+  border-collapse: collapse; /* 合并边框 */
+}
+
+.axis-header {
+  width: 80px; /* 调整行标题宽度 */
+  max-width: 80px;
+  min-width: 80px;
+  font-size: 0.9em;
+  position: sticky;
+  left: 0;
+  background: #f8f9fa !important; /* 确保行标题背景颜色正确 */
+  z-index: 1;
+}
+
+.capacity-header {
+  width: 40px; /* 调整列标题宽度 */
+  max-width: 40px;
+  min-width: 40px;
+  font-size: 1.0em;
+  text-align: center; /* 居中对齐 */
+  background: #f8f9fa !important; /* 确保行标题背景颜色正确 */
+  z-index: 1;
+}
+
+td {
+  text-align: center; /* 单元格内容居中对齐 */
+  padding: 8px;
+  border: 1px solid #e0e0e0; /* 添加边框 */
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9; /* 交替行背景颜色 */
+}
+
+tr:hover {
+  background-color: #f1f1f1; /* 鼠标悬停时的行背景颜色 */
+}
+
+/* 在文件末尾添加 */
+.current-cell {
+  background-color: #4CAF50 !important;
+  font-weight: bold !important;
+  transition: all 0.3s ease-in-out !important;
+  transform: scale(1.05);
+}
+
+/* .result-panel {
+  margin-top: 20px;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  animation: fadeIn 0.5s ease-out;
+} */
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.result-item {
+  padding: 8px;
+  margin: 4px 0;
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.previous-cell {
+  background-color: #FFEB3B !important;
+  transition: all 0.3s ease-in-out !important;
+}
+
+/* structure-component-dp-knapsack.component.css */
+/* 添加容量输入样式 */
+.capacity-control {
+  padding: 16px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #eee;
+}
+
+.mat-form-field {
+  width: 100%;
+}
+
+input[type="number"] {
+  font-size: 1.1em;
+  text-align: center;
+}
+
+/* 最优路径单元格样式 */
+/* 修改最优路径样式，仅在显示时应用 */
+/* .optimal-cell {
+  background-color: #ff4757 !important;
+  font-weight: bold !important;
+  transition: all 0.3s ease-in-out !important;
+  transform: scale(1.05);
+  display: inherit; /* 确保元素正常显示 */ 
+
+

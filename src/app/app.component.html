@@ -1,0 +1,25 @@
+<mat-toolbar color="primary">
+  <span class="platform-title">计算思维交互式学习平台</span>
+  <span class="spacer"></span>
+  <ng-container *ngIf="!isLoggedIn">
+    <a mat-button routerLink="/login">登录</a>
+    <a mat-button routerLink="/register">注册</a>
+  </ng-container>
+  <button mat-button *ngIf="isLoggedIn" (click)="openVideoRoom()">视频在线课堂</button>
+  <button mat-button *ngIf="isLoggedIn" (click)="logout()">退出</button>
+</mat-toolbar>
+
+<div class="content-area">
+  <router-outlet></router-outlet>
+</div>
+
+<app-video-room
+  *ngIf="showVideoRoom"
+  class="video-room-popup"
+  (closed)="showVideoRoom = false"
+  [user]="user"
+></app-video-room>
+
+
+
+
